@@ -62,7 +62,7 @@ O conteúdo deste repositório **não constitui recomendação ou incentivo à r
 
 Nesta atividade avaliou-se a robustez do modelo Kimi-K2 frente a ataques adversariais do tipo *jailbreak*.
 O modelo está disponível no HuggingFace e foi utilizando o Inference Provider Novita.
-O código gerado para chamada ao LLM está disponível em  [`notebooks/aula-02-llm-jailbreaks.ipynb].
+O código gerado para chamada ao LLM está disponível em  [`notebooks/aula-02-llm-jailbreaks.ipynb`](notebooks/aula-02-llm-jailbreaks.ipynb)
 Os ataques são baseado nos ataques disponíveis neste [dataset](https://github.com/yjw1029/Self-Reminder-Data/blob/master/data/jailbreak_prompts.csv), sendo empregadas técnicas de personas sem restrições, *roleplay*, ofuscação e cifras, além do uso de outros idiomas (português, russo, fijiano, guarani).
 O ambiente de execução utilizado foi o Google Colab.
 

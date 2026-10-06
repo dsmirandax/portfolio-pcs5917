@@ -79,7 +79,7 @@ No total, **12 dos 101 ataques** tiveram sucesso, uma taxa de sucesso de ataque 
 | Guarani | 1 | 0 | 0,0% |
 | **Total** | **101** | **12** | **11,9%** |
 
-![Taxa de sucesso de jailbreak por idioma](outros/aula%2002/taxa_sucesso_por_idioma.png)
+![Taxa de sucesso de jailbreak por idioma](Outros/Aula%2002/taxa_sucesso_por_idioma.png)
 
 Há uma diferença expressiva entre os idiomas. Os ataques em **inglês**, língua de maior cobertura no alinhamento do modelo, tiveram a **menor** taxa de sucesso (8,0%), ainda que concentrem a maioria das tentativas (75 de 101). Os ataques em idiomas de menor recurso foram proporcionalmente muito mais eficazes: **russo** (25,0%) e **português** (25,0%).
 

@@ -56,7 +56,33 @@ Os conteúdos devem ser utilizados somente em **ambientes autorizados e controla
 O conteúdo deste repositório **não constitui recomendação ou incentivo à realização de atividades maliciosas**. O objetivo é compreender riscos de segurança, desenvolver métodos de avaliação e contribuir para o desenvolvimento de sistemas de Inteligência Artificial mais seguros.
 
 ## 3. Resultados obtidos
-Aula 02: Fundamentos de Segurança e IA
+### Aula 02 – Fundamentos de Segurança e IA
 
+**Cenário**
 
+Nesta atividade avaliou-se a robustez do modelo Kimi-K2 frente a ataques adversariais do tipo *jailbreak*.
+O modelo está disponível no HuggingFace e foi utilizando o Inference Provider Novita.
+O código gerado para chamada ao LLM está disponível em  [`notebooks/aula-02-llm-jailbreaks.ipynb].
+Os ataques são baseado nos ataques disponíveis neste [dataset](https://github.com/yjw1029/Self-Reminder-Data/blob/master/data/jailbreak_prompts.csv), sendo empregadas técnicas de personas sem restrições, *roleplay*, ofuscação e cifras, além do uso de outros idiomas (português, russo, fijiano, guarani).
+O ambiente de execução utilizado foi o Google Colab.
+
+**Resultados**
+
+No total, **12 dos 101 ataques** tiveram sucesso, uma taxa de sucesso de ataque de **11,9%**. A taxa separada por idioma:
+    
+| Idioma | Ataques | Sucessos | Taxa de sucesso |
+|---|---:|---:|---:|
+| Inglês | 75 | 6 | 8,0% |
+| Português | 20 | 5 | 25,0% |
+| Russo | 4 | 1 | 25,0% |
+| Fijiano | 1 | 0 | 0,0% |
+| Guarani | 1 | 0 | 0,0% |
+| **Total** | **101** | **12** | **11,9%** |
+
+![Taxa de sucesso de jailbreak por idioma](outros/aula%2002/taxa_sucesso_por_idioma.png)
+
+Há uma diferença expressiva entre os idiomas. Os ataques em **inglês**, língua de maior cobertura no alinhamento do modelo, tiveram a **menor** taxa de sucesso (8,0%), ainda que concentrem a maioria das tentativas (75 de 101). Os ataques em idiomas de menor recurso foram proporcionalmente muito mais eficazes: **russo** (25,0%) e **português** (25,0%).
+
+O padrão é consistente com a hipótese de que o alinhamento de segurança dos LLMs é mais frágil fora do inglês, já que as defesas são majoritariamente treinadas e avaliadas nesse idioma.
+O conjunto completo encontra-se em [`outros/aula 02/prompts_e_respostas.csv`](outros/aula%2002/prompts_e_respostas.csv).
 

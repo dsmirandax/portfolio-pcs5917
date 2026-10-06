@@ -84,5 +84,4 @@ No total, **12 dos 101 ataques** tiveram sucesso, uma taxa de sucesso de ataque 
 Há uma diferença expressiva entre os idiomas. Os ataques em **inglês**, língua de maior cobertura no alinhamento do modelo, tiveram a **menor** taxa de sucesso (8,0%), ainda que concentrem a maioria das tentativas (75 de 101). Os ataques em idiomas de menor recurso foram proporcionalmente muito mais eficazes: **russo** (25,0%) e **português** (25,0%).
 
 O padrão é consistente com a hipótese de que o alinhamento de segurança dos LLMs é mais frágil fora do inglês, já que as defesas são majoritariamente treinadas e avaliadas nesse idioma.
-O conjunto completo encontra-se em [`outros/aula 02/prompts_e_respostas.csv`](outros/aula%2002/prompts_e_respostas.csv).
-
+O conjunto completo encontra-se em [`Outros/Aula 02/prompts_e_respostas.csv`](Outros/aula%2002/prompts_e_respostas.csv).

@@ -85,3 +85,23 @@ Há uma diferença expressiva entre os idiomas. Os ataques em **inglês**, líng
 
 O padrão é consistente com a hipótese de que o alinhamento de segurança dos LLMs é mais frágil fora do inglês, já que as defesas são majoritariamente treinadas e avaliadas nesse idioma.
 O conjunto completo encontra-se em [`Outros/Aula 02/prompts_e_respostas.csv`](Outros/aula%2002/prompts_e_respostas.csv).
+
+
+### Aula 03 – IA para Segurança: Biometria e *Liveness Detection*
+
+**Palestra**
+
+Nesta aula, o professor Dr. Reginaldo Arakaki apresentou uma palestra sobre o uso de IA em biometria e detecção de vivacidade (*liveness detection*), no contexto de um projeto apresentado à Prodesp.
+Principais pontos abordados:
+
+- Aplicações de _liveness detection_;
+- Detecção de presença viva;
+- Preparação da base de dados para treinamento de rede neural e as dificuldades quanto ao uso de conteúdo que podem ferir a LGPD;
+- Desafios quanto a taxa de precisão/falso negativo e ataques adversariais.
+
+**Atividade em grupo**
+
+Refere-se a um estudo de caso conforme apresentado na imagem abaixo:
+
+![Atividade em grupo – Aula 03](Images/print_miro_dinamica.png)
+

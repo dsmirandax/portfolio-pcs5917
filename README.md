@@ -2,7 +2,7 @@
 
 ## Portfólio Individual
 
-**Aluno:** Nome do aluno ou aluna  
+**Aluno:** Diego Sousa de Miranda
 **Disciplina:** PCS5917 – IA Adversarial  
 **Período:** 3º período de 2026  
 **Instituição:** Universidade de São Paulo – Escola Politécnica  
@@ -104,4 +104,128 @@ Principais pontos abordados:
 Refere-se a um estudo de caso conforme apresentado na imagem abaixo:
 
 ![Atividade em grupo – Aula 03](Images/print_miro_dinamica.png)
+
+
+
+#### Atividade prática — Detecção de Áudio Falso
+
+Cenário:
+- **Dataset de referência:** ASVspoof 2024
+- **Dataset utilizado:** subconjunto balanceado com 2.000 amostras (bonafide × spoof) do dataset referência. Divisão de 70-30 (treino e teste).
+- **Biblioteca de extração de features:** pyAudioAnalysis
+- **Notebook:** [`notebooks/aula-03-asvspoof.ipynb`](notebooks/aula-03-asvspoof.ipynb)
+
+Resultados:
+
+##### A) Análise exploratória
+
+Sinais de áudio bonafide vs spoof: ![](Images/Atividade03/audio_signals.png)
+
+Cada áudio foi reduzido a um vetor de features agregadas, por janelas de médio prazo (0,5 s, passo 0,25 s), a média e o desvio das features de curto prazo do pyAudioAnalysis.
+Cada frame da janela de curto prazo possui 68 features (34 de curto prazo + 34 deltas). Uma vez que cada janela de médio prazo abrange 20 frames da janelas de curto prazo, calculam-se se duas estatísticas, média e desvio padrão, de cada uma das 68 features, totalizando 136 features por áudio.
+
+Numa análise preliminar por correlação entre as features e a classe alvo, as features **`mfcc_1`, `energy_entropy`, `spectral_centroid`, `spectral_flux`, `chroma_1` e `chroma_7`** apresentaram maior correlação com essa classe. ![Correlação feature–classe (por áudio)](Images/Atividade03/class_spoof_correlation.png)
+
+Ainda, a análise sobre essas features (pairplot por pares), observa-se que elas possuem **separabilidade razoável** entre bonafide e spoof, ainda que com sobreposição parcial.
+[Correlação em pares](Images/Atividade03/pairplot_correlation.png)
+
+A separabilidade entre ambas classes também foi reproduzida por uma projeção **PCA**, que distingue em 2D os áudios bonafide dos spoof.
+![Projeção PCA bonafide × spoof](Images/Atividade03/pca_2d.png)
+
+##### B) Treinamento dos classificadores 
+ ###### B1 - SVM (kernel linear)
+Primeiramente, treinou-se um **SVM linear**, com busca do parâmetro `C` por validação cruzada (interna do pyAudioAnalysis) (critério F1 macro). Melhor resultado:
+
+| C | Precisão bon | Recall bon | F1 bon | Precisão spo | Recall spo | F1 spo | ACC | F1 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| **0,500** | **94,6** | **94,7** | **94,7** | **94,6** | **94,6** | **94,6** | **94,6** | **94,6** |
+
+Na avaliação sobre o conjunto de teste (300 bonafide + 300 spoof):
+
+| Classe | Precisão | Recall | F1 |
+|---|---:|---:|---:|
+| bonafide | 0,921 | 0,933 | 0,927 |
+| spoof | 0,932 | 0,920 | 0,926 |
+| **Acurácia** | | | **0,927** |
+
+**Importância das features (pesos do SVM).** Os coeficientes do SVM foram ordenados pelo módulo e exibidos com sinal, sendo positivo puxam para spoof e negativo para bonafide.
+Os pesos distribuem-se de forma gradual entre muitas das features sem uma dominante, reflexo da natureza linear do modelo e da correlação entre features.
+As de maior peso positivo são `mfcc_1_mean` e a variabilidade de `mfcc_1` e `zcr`, e de menor peso negativo são os desvios dos deltas de MFCCs de ordem alta e do *spectral rolloff*, indicando que a fala real preserva maior variabilidade na dinâmica espectral fina.
+
+![Pesos das features no SVM linear](Images/Atividade03/svm_feature.png)
+![Correlação entre top-10 features](Images/Atividade03/top10_correlation.png)
+
+ ###### B2 - GBooting 
+O **Gradient Boosting**, foi treinado usando validação cruzada estratificada (k=5 folds) e busca de hiperparâmetros por `GridSearchCV`, obteve o F1 de **0,943** no conjunto de teste de acordo com os parâmetros: `learning_rate ":" 0.1`, `max_depth ":" 5`, `max_iter ":" 300`.
+
+A importância das features foi avaliada por **permutation importance** (vide [](Images/Atividade03/features_gboost.png)), onde **`mfcc_1_mean`** demonstra-se com grande impacto no desempenho do classificador, cuja remoção derruba o F1 muito acima de qualquer outra feature. As demais features de mais importância também são baseadas em **MFCCs**: `mfcc_1_std` e os desvios dos deltas de MFCCs de ordem mais alta (`delta_mfcc_12_std`, `delta_mfcc_6_std`, `delta_mfcc_1_std`). Isso indica que o modelo se apoia tanto no nível espectral baixo (via `mfcc_1`) quanto em deltas e desvios dos MFCCs de ordem alta.
+
+A sensibilidade de features foi realizada retreinando o classificador com as top-10 features, obteve-se o desempenho abaixo. Esse resultado indica que essas features já pegam a maior parte das características do audio spoof.
+| Classe | Precisão | Recall | F1 |
+|---|---:|---:|---:|
+| bonafide | 0,92 | 0,87 | 0,89 |
+| spoof | 0,88 | 0,92 | 0,90 |
+| **Acurácia** | | | **0,90** |
+
+ ###### RNN-GRU 
+A **RNN-GRU**, apesar de modelar a dinâmica temporal, ficou abaixo. Esse comportamento pode ser decorrente do volume limitado de dados, uma vez que modelos baseados em deep learning tendem a exigir grande base de dados de treinamento para superar modelos clássicos.
+
+Diferentemente dos classificadores anteriores, a GRU recebe a sequência completa de frames (68 features por frame) de cada amostra, preservando a ordem temporal do sinal.
+
+**Arquitetura e hiperparâmetros:**
+
+| Parâmetro | Valor |
+|---|---|
+| Entrada | sequência de frames × 68 features |
+| Camada recorrente | GRU — 1 camada, 32 unidades |
+| Regularização | Dropout 0,3 |
+| Saída | camada linear (1 neurônio) |
+| Função de perda | BCEWithLogitsLoss |
+| Otimizador | Adam (lr ":" 0,001) |
+| Tamanho do batch | 32 |
+| Épocas | até 40, com *early stopping* (paciência 5) |
+| Divisão de validação | 20% do treino (estratificada) |
+| Semente | 42 |
+
+
+| Classe | Precisão | Recall | F1 |
+|---|---:|---:|---:|
+| bonafide | 0,879 | 0,897 | 0,888 |
+| spoof | 0,895 | 0,877 | 0,886 |
+| **Acurácia** | | | **0,887** |
+
+
+- **Importância das features.** A importância foi medida por **ablação** (remoção de feature e observação de F1). O maior impacto foi observado em `mfcc_1`, `chroma_1`, `zcr`, `spectral_flux` e `chroma_7`.
+![Importância de features por ablação (RNN-GRU)](Images/Atividade03/features_gru.png)
+
+##### C) Análise comparativa
+
+**Comparação dos modelos.** O **Gradient Boosting** obteve o melhor desempenho (F1 0,943), seguido pelo **SVM linear** (F1 0,926), ambos superando a **RNN-GRU** (F1 0,886). A vantagem dos modelos clássicos é coerente com o cenário atual pois, com dados limitados, as features agregadas já capturam boa parte da informação discriminante, enquanto a RNN-GRU não captura no mesmo nível. Ainda assim, os três concordam na característica mais relevante (`mfcc_1`).
+![Gráficos mfcc_1 bonafide e spoof ao longo dos frames](Images/Atividade03/mfcc_1.png)
+
+![Curva ROC - SVM, Gradient Boosting e GRU](Images/roc_comparacao.png)
+
+**Análise crítica:  viés de duração.** Investigou-se se os modelos poderiam explorar um atalho conhecido do ASVspoof: a diferença de **duração** entre as classes. Os áudios spoof são sistematicamente mais curtos (mediana ~440 frames contra ~570 dos bonafide), e **apenas a duração** já separa as classes com **AUC ":" 0,79**. As implicações diferem por modelo: SVM e Gradient Boosting usam features agregadas, que **não codificam a duração**. A GRU recebe a sequência completa e **enxerga a duração**, podendo conter esse vies. Porém, a proporção de **silêncio**, por sua vez, mostrou-se menos discriminatória, indicando que caraterísticas da fala são utilizadas.
+
+
+##### Adicional — Ataque adversarial a modelo de fala
+
+Como atividade adicional, demonstrou-se um ataque adversarial *white-box* sobre o modelo de reconhecimento de fala **Wav2Vec2** (`facebook/wav2vec2-base-960h`). O ataque gerado foi o **PGD** em duas situações distintas:
+
+- **Não direcionado:** altera a transcrição sem alvo definido. Perturbação quase imperceptível (SNR ~ 33dB).
+
+- **Direcionado:** força-se um texto-alvo, o áudio limpo passou a ser transcrito como **"HELLO WORLD"**. Exige perturbação maior (SNR ~ 15 dB).
+
+    Áudios para reprodução: [limpo](outros/audios_ataque/audio_limpo.wav)
+    Transcricao do audio limpo: I HAD THAT CURIOSITY BESIDE ME AT THIS MOMENT
+    [não direcionado](outros/audios_ataque/adv_nao_direcionado.wav)
+    Transcricao do audio (não direcionado): WHY HAVE THAT CURIOSITY BESIDE ME AT THIS MULLET
+    [direcionado](outros/audios_ataque/adv_direcionado.wav)
+    Transcricao do audio (direcionado): HELLO WORLD
+   
+Notebook: [`notebooks/audio_spoofing_example.ipynb`](notebooks/audio_spoofing_example.ipynb).
+
+
+
+
 

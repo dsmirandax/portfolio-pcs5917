@@ -216,11 +216,11 @@ Como atividade adicional, demonstrou-se um ataque adversarial *white-box* sobre 
 
 - **Direcionado:** força-se um texto-alvo, o áudio limpo passou a ser transcrito como **"HELLO WORLD"**. Exige perturbação maior (SNR ~ 15 dB).
 
-    Áudios para reprodução: [limpo](outros/audios_ataque/audio_limpo.wav)
+    Áudios para reprodução: [limpo](Outros/Aula%2003/audio_limpo.wav)
     Transcricao do audio limpo: I HAD THAT CURIOSITY BESIDE ME AT THIS MOMENT
-    [não direcionado](outros/audios_ataque/adv_nao_direcionado.wav)
+    [não direcionado](Outros/Aula%2003/adv_nao_direcionado.wav)
     Transcricao do audio (não direcionado): WHY HAVE THAT CURIOSITY BESIDE ME AT THIS MULLET
-    [direcionado](outros/audios_ataque/adv_direcionado.wav)
+    [direcionado](Outros/Aula%2003/adv_direcionado.wav)
     Transcricao do audio (direcionado): HELLO WORLD
    
 Notebook: [`notebooks/audio_spoofing_example.ipynb`](notebooks/audio_spoofing_example.ipynb).

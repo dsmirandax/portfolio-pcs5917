@@ -2,7 +2,7 @@
 
 ## Portfólio Individual
 
-**Aluno:** Diego Sousa de Miranda
+**Aluno:** Diego Sousa de Miranda  
 **Disciplina:** PCS5917 – IA Adversarial  
 **Período:** 3º período de 2026  
 **Instituição:** Universidade de São Paulo – Escola Politécnica  
@@ -216,12 +216,12 @@ Como atividade adicional, demonstrou-se um ataque adversarial *white-box* sobre 
 
 - **Direcionado:** força-se um texto-alvo, o áudio limpo passou a ser transcrito como **"HELLO WORLD"**. Exige perturbação maior (SNR ~ 15 dB).
 
-    Áudios para reprodução: [limpo](Outros/Aula%2003/audio_limpo.wav)
-    Transcricao do audio limpo: I HAD THAT CURIOSITY BESIDE ME AT THIS MOMENT
-    [não direcionado](Outros/Aula%2003/adv_nao_direcionado.wav)
-    Transcricao do audio (não direcionado): WHY HAVE THAT CURIOSITY BESIDE ME AT THIS MULLET
-    [direcionado](Outros/Aula%2003/adv_direcionado.wav)
-    Transcricao do audio (direcionado): HELLO WORLD
+    Áudios para reprodução: [limpo](Outros/Aula%2003/audio_limpo.wav) <br>
+    Transcricao do audio limpo: I HAD THAT CURIOSITY BESIDE ME AT THIS MOMENT <br>
+    [não direcionado](Outros/Aula%2003/adv_nao_direcionado.wav) <br>
+    Transcricao do audio (não direcionado): WHY HAVE THAT CURIOSITY BESIDE ME AT THIS MULLET <br>  
+    [direcionado](Outros/Aula%2003/adv_direcionado.wav) <br>
+    Transcricao do audio (direcionado): HELLO WORLD <br>
    
 Notebook: [`notebooks/audio_spoofing_example.ipynb`](notebooks/audio_spoofing_example.ipynb).
 

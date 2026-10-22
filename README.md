@@ -112,7 +112,7 @@ Cenário:
 - **Dataset de referência:** ASVspoof 2024
 - **Dataset utilizado:** subconjunto balanceado com 2.000 amostras (bonafide × spoof) do dataset referência. Divisão de 70-30 (treino e teste).
 - **Biblioteca de extração de features:** pyAudioAnalysis
-- **Notebook:** [`notebooks/aula-03-asvspoof.ipynb`](notebooks/aula-03-asvspoof.ipynb)
+- **Notebook:** ![`notebooks/aula-03-asvspoof.ipynb`](notebooks/aula_03_asvspoof.ipynb)
 
 Resultados:
 
@@ -151,7 +151,8 @@ Na avaliação sobre o conjunto de teste (300 bonafide + 300 spoof):
 |---|---:|---:|---:|
 | bonafide | 0,921 | 0,933 | 0,927 |
 | spoof | 0,932 | 0,920 | 0,926 |
-| **Acurácia** | | | **0,927** |
+
+**Acurácia:** 0,927
 
 **Importância das features (pesos do SVM).** Os coeficientes do SVM foram ordenados pelo módulo e exibidos com sinal, sendo positivo puxam para spoof e negativo para bonafide.
 Os pesos distribuem-se de forma gradual entre muitas das features sem uma dominante, reflexo da natureza linear do modelo e da correlação entre features.
@@ -170,12 +171,13 @@ A importância das features foi avaliada por **permutation importance**
 
 na qual **`mfcc_1_mean`** demonstra-se com grande impacto no desempenho do classificador, cuja remoção derruba o F1 muito acima de qualquer outra feature. As demais features de mais importância também são baseadas em **MFCCs**: `mfcc_1_std` e os desvios dos deltas de MFCCs de ordem mais alta (`delta_mfcc_12_std`, `delta_mfcc_6_std`, `delta_mfcc_1_std`). Isso indica que o modelo se apoia tanto no nível espectral baixo (via `mfcc_1`) quanto em deltas e desvios dos MFCCs de ordem alta.
 
-A sensibilidade de features foi realizada retreinando o classificador com as top-10 features, obteve-se o desempenho abaixo. Esse resultado indica que essas features já pegam a maior parte das características do audio spoof.
+A sensibilidade de features foi realizada retreinando o classificador com as top-10 features, obteve-se o desempenho abaixo. Esse resultado indica que essas features já pegam a maior parte das características do audio spoof.   
 | Classe | Precisão | Recall | F1 |
 |---|---:|---:|---:|
 | bonafide | 0,92 | 0,87 | 0,89 |
 | spoof | 0,88 | 0,92 | 0,90 |
-| **Acurácia** | | | **0,90** |
+
+**Acurácia:** 0,90
 
  ###### RNN-GRU 
 A **RNN-GRU**, apesar de modelar a dinâmica temporal, ficou abaixo. Esse comportamento pode ser decorrente do volume limitado de dados, uma vez que modelos baseados em deep learning tendem a exigir grande base de dados de treinamento para superar modelos clássicos.
@@ -197,12 +199,12 @@ Diferentemente dos classificadores anteriores, a GRU recebe a sequência complet
 | Divisão de validação | 20% do treino (estratificada) |
 | Semente | 42 |
 
-
 | Classe | Precisão | Recall | F1 |
 |---|---:|---:|---:|
 | bonafide | 0,879 | 0,897 | 0,888 |
 | spoof | 0,895 | 0,877 | 0,886 |
-| **Acurácia** | | | **0,887** |
+
+**Acurácia:** 0,887
 
 
 - **Importância das features.** A importância foi medida por **ablação** (remoção de feature e observação de F1). O maior impacto foi observado em `mfcc_1`, `chroma_1`, `zcr`, `spectral_flux` e `chroma_7`.
@@ -215,14 +217,14 @@ Diferentemente dos classificadores anteriores, a GRU recebe a sequência complet
 <img src="Images/Atividade03/curva_roc.png" width="420" alt="Curva ROC - SVM, Gradient Boosting e RNN-GRU">
 
 A vantagem dos modelos clássicos é coerente com o cenário atual pois, com dados limitados, as features agregadas já capturam boa parte da informação discriminante, enquanto a RNN-GRU não captura no mesmo nível. Ainda assim, os três concordam na característica mais relevante (`mfcc_1`).  
-<img src="Images/Atividade03/mfcc_1.png" width="560" alt="Gráficos mfcc_1 bonafide e spoof ao longo dos frames">
+<img src="Images/Atividade03/mfcc_1.png" width="100%" alt="Gráficos mfcc_1 bonafide e spoof ao longo dos frames">
 
 
 
 **Análise crítica:  viés de duração.** Investigou-se se os modelos poderiam explorar um atalho conhecido do ASVspoof: a diferença de **duração** entre as classes. Os áudios spoof são sistematicamente mais curtos (mediana ~440 frames contra ~570 dos bonafide), e **apenas a duração** já separa as classes com **AUC ":" 0,79**. As implicações diferem por modelo: SVM e Gradient Boosting usam features agregadas, que **não codificam a duração**. A GRU recebe a sequência completa e **enxerga a duração**, podendo conter esse viés. Porém, a proporção de **silêncio**, por sua vez, mostrou-se menos discriminatória, indicando que características da fala são utilizadas.
 
 
-##### Adicional — Ataque adversarial a modelo de fala
+### Adicional: Ataque adversarial a modelo de fala
 
 Como atividade adicional, demonstrou-se um ataque adversarial *white-box* sobre o modelo de reconhecimento de fala **Wav2Vec2** (`facebook/wav2vec2-base-960h`).  
 O ataque gerado foi o **PGD** em duas situações distintas:
@@ -238,7 +240,7 @@ O ataque gerado foi o **PGD** em duas situações distintas:
     [direcionado](Outros/Aula%2003/adv_direcionado.wav) <br>
     Transcricao do audio (direcionado): HELLO WORLD <br>
    
-Notebook: [`notebooks/audio_spoofing_example.ipynb`](notebooks/audio_spoofing_example.ipynb).
+Notebook: ![`Outros/Aula 03/audio_spoofing_example.ipynb`](Outros/Aula%2003/audio_spoofing_example.ipynb).
 
 
 

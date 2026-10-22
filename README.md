@@ -103,7 +103,7 @@ Principais pontos abordados:
 
 Refere-se a um estudo de caso conforme apresentado na imagem abaixo:
 
-<img src="Images/print_miro_dinamica.png" width="680" alt="Atividade em grupo – Aula 03">
+<img src="Images/print_miro_dinamica.png" width="750" alt="Atividade em grupo – Aula 03">
 
 
 #### Atividade prática — Detecção de Áudio Falso
@@ -118,19 +118,24 @@ Resultados:
 
 ##### A) Análise exploratória
 
-Sinais de áudio bonafide vs spoof: ![](Images/Atividade03/audio_signals.png)
+Sinais de áudio bonafide vs spoof:   
+<img src="Images/Atividade03/audio_signals.png" width="420" alt="Sinais de áudio bonafide vs spoof">
 
-Cada áudio foi reduzido a um vetor de features agregadas, por janelas de médio prazo (0,5 s, passo 0,25 s), a média e o desvio das features de curto prazo do pyAudioAnalysis.
-Cada frame da janela de curto prazo possui 68 features (34 de curto prazo + 34 deltas). Uma vez que cada janela de médio prazo abrange 20 frames da janelas de curto prazo, calculam-se se duas estatísticas, média e desvio padrão, de cada uma das 68 features, totalizando 136 features por áudio.
+A primeira vista, observa-se pelos sinais de áudio, numa escala temporal, que o audio bonafide há trechos de energia zero, ou seja, silêncio, que não são observados nos áudio spoof.
 
-Numa análise preliminar por correlação entre as features e a classe alvo, as features **`mfcc_1`, `energy_entropy`, `spectral_centroid`, `spectral_flux`, `chroma_1` e `chroma_7`** apresentaram maior correlação com essa classe. ![Correlação feature–classe (por áudio)](Images/Atividade03/class_spoof_correlation.png)
+Para prosseguir com a análise, cada áudio foi reduzido a um vetor de features agregadas, por janelas de médio prazo (0,5 s, passo 0,25 s), a média e o desvio das features de curto prazo do pyAudioAnalysis. Cada frame da janela de curto prazo possui 68 features (34 de curto prazo + 34 deltas). Uma vez que cada janela de médio prazo abrange 20 frames da janelas de curto prazo, calculam-se se duas estatísticas, média e desvio padrão, de cada uma das 68 features, totalizando 136 features por áudio.
+
+
+Numa análise preliminar por correlação entre as features e a classe alvo, as features **`mfcc_1`, `energy_entropy`, `spectral_centroid`, `spectral_flux`, `chroma_1` e `chroma_7`** apresentaram maior correlação com essa classe. 
+
+<img src="Images/Atividade03/class_spoof_correlation.png" width="380" alt="Correlação feature–classe (por áudio)">
 
 Ainda, a análise sobre essas features (pairplot por pares), observa-se que elas possuem **separabilidade razoável** entre bonafide e spoof, ainda que com sobreposição parcial.   
 
 <img src="Images/Atividade03/pairplot_correlation.png" width="750" alt="Correlação em pares">
 
 A separabilidade entre ambas classes também foi reproduzida por uma projeção **PCA**, que distingue em 2D os áudios bonafide dos spoof.
-![Projeção PCA bonafide × spoof](Images/Atividade03/PCA.png)
+<img src="Images/Atividade03/PCA.png" width="420" alt="Projeção PCA bonafide × spoof">
 
 ##### B) Treinamento dos classificadores 
  ###### B1 - SVM (kernel linear)
@@ -152,13 +157,18 @@ Na avaliação sobre o conjunto de teste (300 bonafide + 300 spoof):
 Os pesos distribuem-se de forma gradual entre muitas das features sem uma dominante, reflexo da natureza linear do modelo e da correlação entre features.
 As de maior peso positivo são `mfcc_1_mean` e a variabilidade de `mfcc_1` e `zcr`, e de menor peso negativo são os desvios dos deltas de MFCCs de ordem alta e do *spectral rolloff*, indicando que a fala real preserva maior variabilidade na dinâmica espectral fina.
 
-![Pesos das features no SVM linear](Images/Atividade03/svm_feature.png)
-![Correlação entre top-10 features](Images/Atividade03/top10_correlation.png)
+<img src="Images/Atividade03/svm_feature.png" width="420" alt="Pesos das features no SVM linear">
+
+<img src="Images/Atividade03/top10_correlation.png" width="420" alt="Correlação entre top-10 features">
 
  ###### B2 - GBooting 
-O **Gradient Boosting**, foi treinado usando validação cruzada estratificada (k=5 folds) e busca de hiperparâmetros por `GridSearchCV`, obteve o F1 de **0,943** no conjunto de teste de acordo com os parâmetros: `learning_rate ":" 0.1`, `max_depth ":" 5`, `max_iter ":" 300`.
+O **Gradient Boosting**, foi treinado usando validação cruzada estratificada (k=5 folds) e busca de hiperparâmetros por `GridSearchCV`, obteve o F1 de **0,943** no conjunto de teste de acordo com os parâmetros: `learning_rate ":" 0.1`, `max_depth ":" 5`, `max_iter ":" 300`.   
 
-A importância das features foi avaliada por **permutation importance** (vide [](Images/Atividade03/features_gboost.png)), onde **`mfcc_1_mean`** demonstra-se com grande impacto no desempenho do classificador, cuja remoção derruba o F1 muito acima de qualquer outra feature. As demais features de mais importância também são baseadas em **MFCCs**: `mfcc_1_std` e os desvios dos deltas de MFCCs de ordem mais alta (`delta_mfcc_12_std`, `delta_mfcc_6_std`, `delta_mfcc_1_std`). Isso indica que o modelo se apoia tanto no nível espectral baixo (via `mfcc_1`) quanto em deltas e desvios dos MFCCs de ordem alta.
+A importância das features foi avaliada por **permutation importance**
+
+<img src="Images/Atividade03/features_gboost.png" width="420" alt="Correlação entre top-10 features">
+
+na qual **`mfcc_1_mean`** demonstra-se com grande impacto no desempenho do classificador, cuja remoção derruba o F1 muito acima de qualquer outra feature. As demais features de mais importância também são baseadas em **MFCCs**: `mfcc_1_std` e os desvios dos deltas de MFCCs de ordem mais alta (`delta_mfcc_12_std`, `delta_mfcc_6_std`, `delta_mfcc_1_std`). Isso indica que o modelo se apoia tanto no nível espectral baixo (via `mfcc_1`) quanto em deltas e desvios dos MFCCs de ordem alta.
 
 A sensibilidade de features foi realizada retreinando o classificador com as top-10 features, obteve-se o desempenho abaixo. Esse resultado indica que essas features já pegam a maior parte das características do audio spoof.
 | Classe | Precisão | Recall | F1 |
@@ -196,21 +206,26 @@ Diferentemente dos classificadores anteriores, a GRU recebe a sequência complet
 
 
 - **Importância das features.** A importância foi medida por **ablação** (remoção de feature e observação de F1). O maior impacto foi observado em `mfcc_1`, `chroma_1`, `zcr`, `spectral_flux` e `chroma_7`.
-![Importância de features por ablação (RNN-GRU)](Images/Atividade03/curva_roc.png)
+<img src="Images/Atividade03/features_gru.png" width="420" alt="Importância de features por ablação (RNN-GRU)">
 
 ##### C) Análise comparativa
 
-**Comparação dos modelos.** O **Gradient Boosting** obteve o melhor desempenho (F1 0,943), seguido pelo **SVM linear** (F1 0,926), ambos superando a **RNN-GRU** (F1 0,886). A vantagem dos modelos clássicos é coerente com o cenário atual pois, com dados limitados, as features agregadas já capturam boa parte da informação discriminante, enquanto a RNN-GRU não captura no mesmo nível. Ainda assim, os três concordam na característica mais relevante (`mfcc_1`).
-<img src="Images/Atividade03/mfcc_1.png" width="680" alt="Gráficos mfcc_1 bonafide e spoof ao longo dos frames">
+**Comparação dos modelos.** O **Gradient Boosting** obteve o melhor desempenho (F1 0,943), seguido pelo **SVM linear** (F1 0,926), ambos superando a **RNN-GRU** (F1 0,886).
 
-![Curva ROC - SVM, Gradient Boosting e GRU](Images/Atividade03/.png)
+<img src="Images/Atividade03/curva_roc.png" width="420" alt="Curva ROC - SVM, Gradient Boosting e RNN-GRU">
 
-**Análise crítica:  viés de duração.** Investigou-se se os modelos poderiam explorar um atalho conhecido do ASVspoof: a diferença de **duração** entre as classes. Os áudios spoof são sistematicamente mais curtos (mediana ~440 frames contra ~570 dos bonafide), e **apenas a duração** já separa as classes com **AUC ":" 0,79**. As implicações diferem por modelo: SVM e Gradient Boosting usam features agregadas, que **não codificam a duração**. A GRU recebe a sequência completa e **enxerga a duração**, podendo conter esse vies. Porém, a proporção de **silêncio**, por sua vez, mostrou-se menos discriminatória, indicando que caraterísticas da fala são utilizadas.
+A vantagem dos modelos clássicos é coerente com o cenário atual pois, com dados limitados, as features agregadas já capturam boa parte da informação discriminante, enquanto a RNN-GRU não captura no mesmo nível. Ainda assim, os três concordam na característica mais relevante (`mfcc_1`).  
+<img src="Images/Atividade03/mfcc_1.png" width="560" alt="Gráficos mfcc_1 bonafide e spoof ao longo dos frames">
+
+
+
+**Análise crítica:  viés de duração.** Investigou-se se os modelos poderiam explorar um atalho conhecido do ASVspoof: a diferença de **duração** entre as classes. Os áudios spoof são sistematicamente mais curtos (mediana ~440 frames contra ~570 dos bonafide), e **apenas a duração** já separa as classes com **AUC ":" 0,79**. As implicações diferem por modelo: SVM e Gradient Boosting usam features agregadas, que **não codificam a duração**. A GRU recebe a sequência completa e **enxerga a duração**, podendo conter esse viés. Porém, a proporção de **silêncio**, por sua vez, mostrou-se menos discriminatória, indicando que características da fala são utilizadas.
 
 
 ##### Adicional — Ataque adversarial a modelo de fala
 
-Como atividade adicional, demonstrou-se um ataque adversarial *white-box* sobre o modelo de reconhecimento de fala **Wav2Vec2** (`facebook/wav2vec2-base-960h`). O ataque gerado foi o **PGD** em duas situações distintas:
+Como atividade adicional, demonstrou-se um ataque adversarial *white-box* sobre o modelo de reconhecimento de fala **Wav2Vec2** (`facebook/wav2vec2-base-960h`).  
+O ataque gerado foi o **PGD** em duas situações distintas:
 
 - **Não direcionado:** altera a transcrição sem alvo definido. Perturbação quase imperceptível (SNR ~ 33dB).
 

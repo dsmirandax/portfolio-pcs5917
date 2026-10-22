@@ -79,7 +79,7 @@ No total, **12 dos 101 ataques** tiveram sucesso, uma taxa de sucesso de ataque 
 | Guarani | 1 | 0 | 0,0% |
 | **Total** | **101** | **12** | **11,9%** |
 
-![Taxa de sucesso de jailbreak por idioma](Images/Atividade02/taxa_sucesso_por_idioma.png)
+<img src="Images/Atividade02/taxa_sucesso_por_idioma.png" width="520" alt="Taxa de sucesso de jailbreak por idioma">
 
 Há uma diferença expressiva entre os idiomas. Os ataques em **inglês**, língua de maior cobertura no alinhamento do modelo, tiveram a **menor** taxa de sucesso (8,0%), ainda que concentrem a maioria das tentativas (75 de 101). Os ataques em idiomas de menor recurso foram proporcionalmente muito mais eficazes: **russo** (25,0%) e **português** (25,0%).
 
@@ -103,8 +103,7 @@ Principais pontos abordados:
 
 Refere-se a um estudo de caso conforme apresentado na imagem abaixo:
 
-![Atividade em grupo – Aula 03](Images/print_miro_dinamica.png)
-
+<img src="Images/print_miro_dinamica.png" width="680" alt="Atividade em grupo – Aula 03">
 
 
 #### Atividade prática — Detecção de Áudio Falso
@@ -126,11 +125,12 @@ Cada frame da janela de curto prazo possui 68 features (34 de curto prazo + 34 d
 
 Numa análise preliminar por correlação entre as features e a classe alvo, as features **`mfcc_1`, `energy_entropy`, `spectral_centroid`, `spectral_flux`, `chroma_1` e `chroma_7`** apresentaram maior correlação com essa classe. ![Correlação feature–classe (por áudio)](Images/Atividade03/class_spoof_correlation.png)
 
-Ainda, a análise sobre essas features (pairplot por pares), observa-se que elas possuem **separabilidade razoável** entre bonafide e spoof, ainda que com sobreposição parcial.
-[Correlação em pares](Images/Atividade03/pairplot_correlation.png)
+Ainda, a análise sobre essas features (pairplot por pares), observa-se que elas possuem **separabilidade razoável** entre bonafide e spoof, ainda que com sobreposição parcial.   
+
+<img src="Images/Atividade03/pairplot_correlation.png" width="750" alt="Correlação em pares">
 
 A separabilidade entre ambas classes também foi reproduzida por uma projeção **PCA**, que distingue em 2D os áudios bonafide dos spoof.
-![Projeção PCA bonafide × spoof](Images/Atividade03/pca_2d.png)
+![Projeção PCA bonafide × spoof](Images/Atividade03/PCA.png)
 
 ##### B) Treinamento dos classificadores 
  ###### B1 - SVM (kernel linear)
@@ -196,14 +196,14 @@ Diferentemente dos classificadores anteriores, a GRU recebe a sequência complet
 
 
 - **Importância das features.** A importância foi medida por **ablação** (remoção de feature e observação de F1). O maior impacto foi observado em `mfcc_1`, `chroma_1`, `zcr`, `spectral_flux` e `chroma_7`.
-![Importância de features por ablação (RNN-GRU)](Images/Atividade03/features_gru.png)
+![Importância de features por ablação (RNN-GRU)](Images/Atividade03/curva_roc.png)
 
 ##### C) Análise comparativa
 
 **Comparação dos modelos.** O **Gradient Boosting** obteve o melhor desempenho (F1 0,943), seguido pelo **SVM linear** (F1 0,926), ambos superando a **RNN-GRU** (F1 0,886). A vantagem dos modelos clássicos é coerente com o cenário atual pois, com dados limitados, as features agregadas já capturam boa parte da informação discriminante, enquanto a RNN-GRU não captura no mesmo nível. Ainda assim, os três concordam na característica mais relevante (`mfcc_1`).
-![Gráficos mfcc_1 bonafide e spoof ao longo dos frames](Images/Atividade03/mfcc_1.png)
+<img src="Images/Atividade03/mfcc_1.png" width="680" alt="Gráficos mfcc_1 bonafide e spoof ao longo dos frames">
 
-![Curva ROC - SVM, Gradient Boosting e GRU](Images/roc_comparacao.png)
+![Curva ROC - SVM, Gradient Boosting e GRU](Images/Atividade03/.png)
 
 **Análise crítica:  viés de duração.** Investigou-se se os modelos poderiam explorar um atalho conhecido do ASVspoof: a diferença de **duração** entre as classes. Os áudios spoof são sistematicamente mais curtos (mediana ~440 frames contra ~570 dos bonafide), e **apenas a duração** já separa as classes com **AUC ":" 0,79**. As implicações diferem por modelo: SVM e Gradient Boosting usam features agregadas, que **não codificam a duração**. A GRU recebe a sequência completa e **enxerga a duração**, podendo conter esse vies. Porém, a proporção de **silêncio**, por sua vez, mostrou-se menos discriminatória, indicando que caraterísticas da fala são utilizadas.
 

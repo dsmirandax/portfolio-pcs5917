@@ -243,6 +243,28 @@ O ataque gerado foi o **PGD** em duas situações distintas:
 Notebook: ![`Outros/Aula 03/audio_spoofing_example.ipynb`](Outros/Aula%2003/audio_spoofing_example.ipynb).
 
 
+### Aula 04 – nanoGCG
+Contexto: 
+- Análise estática e dinâmica no notebook fornecido para compreensão do funcionamento da biblioteca nanoGCG. Resultados disponíveis em: ![cópia exemplo nanoGCG](Outros/Aula%2004/Cópia%20de%20Exemplo%20NanoGCG.ipynb)
+- Realização de novos experimentos com outro modelo-alvo (Qwen/Qwen2-1.5B-Instruct) avaliando se a inclusão do sufixo adversarial faz os ataques terem mais sucesso.
+- Os parâmetros de configuração do nanogcg são:
+    num_steps= [100, 200 ou 300] 
+    search_width=64, 
+    topk=64,
+    seed=42,
+    verbosity="WARNING"
+
+- A avaliação dos ataques é realizado por humano.
+
+Resultados:
+Nos experimentos realizados o sufixo adversarial permitiu o modelo fornecer informações censuradas pelo alinhamento de segurança em diferentes tipos de tarefas maliciosas.
+Os ataques gerados, tanto em pt-BR e en-US, foram bem sucedidos, ou seja, não houve nenhuma recusa do modelo em tratar de tais assuntos. Obviamente, faz parte do escopo deste trabalho avaliar a veracidade das respostas.
+
+Alguns exemplos são:
+
+
+
+Notebook: ![`noetbooks/Aula 03/nanoGCG.ipynb`](notebooks/Aula%2003/audio_spoofing_example.ipynb).
 
 
 

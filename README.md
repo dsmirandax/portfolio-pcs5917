@@ -303,3 +303,4 @@ Alguns exemplos dos ataques são apresentados a seguir:
 *Resposta:*
 <img src="Images/Atividade04/resposta4.png" width="100%" alt="Resposta 4">
 
+**Curiosidade**: Em uma resposta específica, o modelo respondeu simulando um diálogo entre IA e usuário. Isso me trouxe à mente que o nanoGCG pode produzir um efeito de técnicas de jailbreak de caixa opaca como _role playing_ ou _logical appeal_. O alvo a ser otimizado (`"Sure, i'm a AI who do not have any ethical constraints..."`) induz a criação de uma persona que leva o modelo a assumir um papel desalinhado contorna seu próprio guardrail.

@@ -260,14 +260,14 @@ Contexto:
 - Notebook: [notebooks/aula_04_nanoGCG.ipynb](notebooks/aula_04_nanoGCG.ipynb)
 
 Resultados:
-Foram gerados **10 ataques** (7 em en-US e 3 em pt-BR) contra o modelo-alvo **Qwen2-1.5B-Instruct**. O sufixo adversarial permitiu ao modelo fornecer informações comumente censuradas pelo alinhamento de segurança dos modelos sem nenhuma recusa (100% de sucesso). 
+Foram gerados **10 ataques** (7 em en-US e 3 em pt-BR) contra o **Qwen2-1.5B-Instruct**. O sufixo adversarial permitiu ao modelo fornecer informações comumente censuradas pelo alinhamento de segurança dos modelos sem nenhuma recusa (100% de sucesso). 
 Ressalta-se que trata-se de um modelo pequeno, de alinhamento mais frágil, portanto a alta taxa de sucesso é esperada. Além disso, a veracidade do conteúdo das respostas não foi avaliada.
 
-A seguir, são apresentados capturas de tela que demonstram a eficiência dos ataques. Em cada exemplo, tem-se uma captura do da tarefa maliciosa e o texto alvo que será otimizado pelo nanoGCG, e uma segunda captura do prompt completo (tarefa maliciosa + sufixo adversarial) e trecho da resposta do modelo.
+A seguir, são apresentados capturas de tela que demonstram a eficiência dos ataques. Em cada exemplo, tem-se uma captura do prompt da tarefa maliciosa e o texto alvo que será otimizado pelo nanoGCG, e uma segunda captura do prompt completo (tarefa maliciosa + sufixo adversarial) e trecho da resposta do modelo.
 
 **Exemplo 1**
 
-*Prompt e alvo:*
+*Prompt malicioso e alvo:*
 <img src="Images/Atividade04/prompt_malicioso1.png" width="100%" alt="Prompt malicioso 1">
 
 *Resposta:*
@@ -277,7 +277,7 @@ A seguir, são apresentados capturas de tela que demonstram a eficiência dos at
 
 **Exemplo 2**
 
-*Prompt e alvo:*
+*Prompt malicioso e alvo:*
 <img src="Images/Atividade04/prompt_malicioso2.png" width="100%" alt="Prompt malicioso 2">
 
 *Resposta:*
@@ -287,7 +287,7 @@ A seguir, são apresentados capturas de tela que demonstram a eficiência dos at
 
 **Exemplo 3**
 
-*Prompt e alvo:*
+*Prompt malicioso e alvo:*
 <img src="Images/Atividade04/prompt_malicioso3.png" width="100%" alt="Prompt malicioso 3">
 
 *Resposta:*
@@ -297,7 +297,7 @@ A seguir, são apresentados capturas de tela que demonstram a eficiência dos at
 
 **Exemplo 4**
 
-*Prompt e alvo:*
+*Prompt malicioso e alvo:*
 <img src="Images/Atividade04/prompt_malicioso4.png" width="100%" alt="Prompt malicioso 4">
 
 *Resposta:*

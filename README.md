@@ -231,7 +231,7 @@ O ataque gerado foi o **PGD** em duas situações distintas:
 
 - **Não direcionado:** altera a transcrição sem alvo definido. Perturbação quase imperceptível (SNR ~ 33dB).
 
-- **Direcionado:** força-se um texto-alvo, o áudio limpo passou a ser transcrito como **"HELLO WORLD"**. Exige perturbação maior (SNR ~ 15 dB).
+- **Direcionado:** força-se um texto alvo, o áudio limpo passou a ser transcrito como **"HELLO WORLD"**. Exige perturbação maior (SNR ~ 15 dB).
 
     Áudios para reprodução: [limpo](Outros/Aula%2003/audio_limpo.wav) <br>
     Transcricao do audio limpo: I HAD THAT CURIOSITY BESIDE ME AT THIS MOMENT <br>
@@ -245,26 +245,61 @@ Notebook: ![`Outros/Aula 03/audio_spoofing_example.ipynb`](Outros/Aula%2003/audi
 
 ### Aula 04 – nanoGCG
 Contexto: 
-- Análise estática e dinâmica no notebook fornecido para compreensão do funcionamento da biblioteca nanoGCG. Resultados disponíveis em: ![cópia exemplo nanoGCG](Outros/Aula%2004/Cópia%20de%20Exemplo%20NanoGCG.ipynb)
+- Análise estática e dinâmica no notebook fornecido para compreensão do funcionamento da biblioteca nanoGCG. Resultados disponíveis em: [cópia exemplo nanoGCG](Outros/Aula%2004/Cópia%20de%20Exemplo%20NanoGCG.ipynb)
 - Realização de novos experimentos com outro modelo-alvo (Qwen/Qwen2-1.5B-Instruct) avaliando se a inclusão do sufixo adversarial faz os ataques terem mais sucesso.
 - Os parâmetros de configuração do nanogcg são:
-    num_steps= [100, 200 ou 300] 
-    search_width=64, 
-    topk=64,
-    seed=42,
-    verbosity="WARNING"
+   ```
+   num_steps = 100, 200 ou 300
+   search_width = 64
+   topk = 64
+   seed = 42
+   verbosity = "WARNING"
+   ```
 
-- A avaliação dos ataques é realizado por humano.
+- A avaliação dos ataques é realizada por humano;
+- Notebook: [notebooks/aula_04_nanoGCG.ipynb](notebooks/aula_04_nanoGCG.ipynb)
 
 Resultados:
-Nos experimentos realizados o sufixo adversarial permitiu o modelo fornecer informações censuradas pelo alinhamento de segurança em diferentes tipos de tarefas maliciosas.
-Os ataques gerados, tanto em pt-BR e en-US, foram bem sucedidos, ou seja, não houve nenhuma recusa do modelo em tratar de tais assuntos. Obviamente, faz parte do escopo deste trabalho avaliar a veracidade das respostas.
+Foram gerados **10 ataques** (7 em en-US e 3 em pt-BR) contra o modelo-alvo **Qwen2-1.5B-Instruct**. O sufixo adversarial permitiu ao modelo fornecer informações comumente censuradas pelo alinhamento de segurança dos modelos sem nenhuma recusa (100% de sucesso). 
+Ressalta-se que trata-se de um modelo pequeno, de alinhamento mais frágil, portanto a alta taxa de sucesso é esperada. Além disso, a veracidade do conteúdo das respostas não foi avaliada.
 
-Alguns exemplos são:
+Alguns exemplos dos ataques são apresentados a seguir:
 
+**Exemplo 1**
 
+*Prompt:*
+<img src="Images/Atividade04/prompt_malicioso1.png" width="100%" alt="Prompt malicioso 1">
 
-Notebook: ![`noetbooks/Aula 03/nanoGCG.ipynb`](notebooks/Aula%2003/audio_spoofing_example.ipynb).
+*Resposta:*
+<img src="Images/Atividade04/resposta1.png" width="100%" alt="Resposta 1">
 
+---
 
+**Exemplo 2**
+
+*Prompt:*
+<img src="Images/Atividade04/prompt_malicioso2.png" width="100%" alt="Prompt malicioso 2">
+
+*Resposta:*
+<img src="Images/Atividade04/resposta2.png" width="100%" alt="Resposta 2">
+
+---
+
+**Exemplo 3**
+
+*Prompt:*
+<img src="Images/Atividade04/prompt_malicioso3.png" width="100%" alt="Prompt malicioso 3">
+
+*Resposta:*
+<img src="Images/Atividade04/resposta3.png" width="100%" alt="Resposta 3">
+
+---
+
+**Exemplo 4**
+
+*Prompt:*
+<img src="Images/Atividade04/prompt_malicioso4.png" width="100%" alt="Prompt malicioso 4">
+
+*Resposta:*
+<img src="Images/Atividade04/resposta4.png" width="100%" alt="Resposta 4">
 

@@ -432,6 +432,5 @@ Análise:
 
 -Experimentos com SelfCipher (sem cifra real) também foi recusado, mesmo no GPT-4 que foi um dos dois modelos usados para no experimento no artigo do CipherChat com aproximadamente 70% de ASR nos ataques de categoria  (`Crimes_And_Illegal_Activities`). Não foi possível identificar por que o resultado do artigo não foi reproduzido. Como a versão do GPT-4 usada nestes experimentos (via openrouter) não pôde ser verificada, uma hipótese e de que ela seja diferente da versão usada no artigo.
 
-O conjunto completo (objetivo, resposta, modelos, nota e resultado) encontra-se em [`Outros/Aula 05/resultados_pair_cipherchat.xlsx`](Outros/Aula%2005/resultados_pair_cipherchat.xlsx).
-
+Os resultados de todas as execuções (PAIR e CipherChat) estão em [`resultados_pair_cipherchat.csv`](Resultados/Atividade05/resultados_pair_cipherchat.csv). 
 
